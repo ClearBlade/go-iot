@@ -39,7 +39,7 @@
 //	cloudiotService, err := cloudiot.NewService(ctx, option.WithTokenSource(config.TokenSource(ctx, token)))
 //
 // See https://godoc.org/google.golang.org/api/option/ for details on options.
-package main
+package iot
 
 import (
 	"bytes"
@@ -2477,6 +2477,7 @@ type ProjectsLocationsRegistriesListCall struct {
 func (r *ProjectsLocationsRegistriesService) List(parent string) *ProjectsLocationsRegistriesListCall {
 	c := &ProjectsLocationsRegistriesListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
+	c.urlParams_.Set("parent", parent)
 	return c
 }
 
@@ -2544,7 +2545,9 @@ func (c *ProjectsLocationsRegistriesListCall) doRequest(alt string) (*http.Respo
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+parent}/registries")
+	reqHeaders.Set("ClearBlade-UserToken", c.s.ServiceAccountCredentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
 	if err != nil {
