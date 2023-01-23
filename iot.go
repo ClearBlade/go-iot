@@ -1804,7 +1804,6 @@ func (r *ProjectsLocationsRegistriesService) BindDeviceToGateway(parent string, 
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesBindDeviceToGatewayCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -1826,7 +1825,6 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) Header() http.Heade
 }
 
 func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -1837,7 +1835,16 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) doRequest(alt strin
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+parent}:bindDeviceToGateway")
+	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.parent)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := getRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("POST", urls, body)
 	if err != nil {
