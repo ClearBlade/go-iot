@@ -90,7 +90,7 @@ func loadServiceAccountCredentials() (*ServiceAccountCredentials, error) {
 	return &credentials, nil
 }
 
-func getRegistryCredentials(registry string, region string, s *Service) (*RegistryUserCredentials) {
+func GetRegistryCredentials(registry string, region string, s *Service) (*RegistryUserCredentials) {
 	cacheKey := fmt.Sprintf("%s-%s", region, registry)
 	if s.RegistryUserCache[cacheKey] != nil {
 		return s.RegistryUserCache[cacheKey]
