@@ -153,7 +153,7 @@ func New() (*Service, error) {
 	return s, nil
 }
 
-// TODO: create first API endpoint passing one of this service and calling getRegistryCredentials from that function
+// TODO: create first API endpoint passing one of this service and calling GetRegistryCredentials from that function
 type Service struct {
 	client *http.Client
 	RegistryUserCache map[string] *RegistryUserCredentials
@@ -1841,7 +1841,7 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) doRequest(alt strin
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := getRegistryCredentials(registry, location, c.s)
+	credentials := GetRegistryCredentials(registry, location, c.s)
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
@@ -3292,7 +3292,7 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) doRequest(alt string) (*h
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := getRegistryCredentials(registry, location, c.s)
+	credentials := GetRegistryCredentials(registry, location, c.s)
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
@@ -3436,7 +3436,7 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) doRequest(alt string) (*h
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := getRegistryCredentials(registry, location, c.s)
+	credentials := GetRegistryCredentials(registry, location, c.s)
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 
@@ -3595,7 +3595,7 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) doRequest(alt string) (*http
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := getRegistryCredentials(registry, location, c.s)
+	credentials := GetRegistryCredentials(registry, location, c.s)
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 
@@ -4203,7 +4203,7 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) doRequest(alt string) (*ht
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := getRegistryCredentials(registry, location, c.s)
+	credentials := GetRegistryCredentials(registry, location, c.s)
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 
@@ -4369,7 +4369,7 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) doRequest(al
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := getRegistryCredentials(registry, location, c.s)
+	credentials := GetRegistryCredentials(registry, location, c.s)
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 	c.urlParams_.Set("method", "sendCommandToDevice")
