@@ -1797,6 +1797,7 @@ func (r *ProjectsLocationsRegistriesService) BindDeviceToGateway(parent string, 
 	c := &ProjectsLocationsRegistriesBindDeviceToGatewayCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
 	c.binddevicetogatewayrequest = binddevicetogatewayrequest
+	c.urlParams_.Set("method", "bindDeviceToGateway")
 	return c
 }
 
@@ -1948,7 +1949,6 @@ func (r *ProjectsLocationsRegistriesService) Create(parent string, deviceregistr
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesCreateCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesCreateCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -1970,7 +1970,6 @@ func (c *ProjectsLocationsRegistriesCreateCall) Header() http.Header {
 }
 
 func (c *ProjectsLocationsRegistriesCreateCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -1981,7 +1980,9 @@ func (c *ProjectsLocationsRegistriesCreateCall) doRequest(alt string) (*http.Res
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+parent}/registries")
+	reqHeaders.Set("ClearBlade-UserToken", c.s.ServiceAccountCredentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("POST", urls, body)
 	if err != nil {
@@ -2083,7 +2084,6 @@ func (r *ProjectsLocationsRegistriesService) Delete(name string) *ProjectsLocati
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesDeleteCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesDeleteCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -2105,13 +2105,14 @@ func (c *ProjectsLocationsRegistriesDeleteCall) Header() http.Header {
 }
 
 func (c *ProjectsLocationsRegistriesDeleteCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
 	}
 	var body io.Reader = nil
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+name}")
+	reqHeaders.Set("ClearBlade-UserToken", c.s.ServiceAccountCredentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("DELETE", urls, body)
 	if err != nil {
@@ -2211,7 +2212,6 @@ func (r *ProjectsLocationsRegistriesService) Get(name string) *ProjectsLocations
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesGetCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesGetCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -2243,7 +2243,6 @@ func (c *ProjectsLocationsRegistriesGetCall) Header() http.Header {
 }
 
 func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -2252,7 +2251,7 @@ func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Respon
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+name}")
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
 	if err != nil {
@@ -2356,7 +2355,6 @@ func (r *ProjectsLocationsRegistriesService) GetIamPolicy(resource string, getia
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesGetIamPolicyCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesGetIamPolicyCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -2698,7 +2696,6 @@ func (c *ProjectsLocationsRegistriesPatchCall) UpdateMask(updateMask string) *Pr
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesPatchCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesPatchCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -2720,7 +2717,6 @@ func (c *ProjectsLocationsRegistriesPatchCall) Header() http.Header {
 }
 
 func (c *ProjectsLocationsRegistriesPatchCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -2731,7 +2727,7 @@ func (c *ProjectsLocationsRegistriesPatchCall) doRequest(alt string) (*http.Resp
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+name}")
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("PATCH", urls, body)
 	if err != nil {
@@ -3114,6 +3110,7 @@ func (r *ProjectsLocationsRegistriesService) UnbindDeviceFromGateway(parent stri
 	c := &ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
 	c.unbinddevicefromgatewayrequest = unbinddevicefromgatewayrequest
+	c.urlParams_.Set("method", "unbindDeviceFromGateway")
 	return c
 }
 
@@ -3121,7 +3118,6 @@ func (r *ProjectsLocationsRegistriesService) UnbindDeviceFromGateway(parent stri
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -3143,7 +3139,6 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) Header() http.H
 }
 
 func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -3154,7 +3149,7 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt s
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+parent}:unbindDeviceFromGateway")
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("POST", urls, body)
 	if err != nil {
@@ -4008,6 +4003,7 @@ func (r *ProjectsLocationsRegistriesDevicesService) ModifyCloudToDeviceConfig(na
 	c := &ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
 	c.modifycloudtodeviceconfigrequest = modifycloudtodeviceconfigrequest
+	c.urlParams_.Set("method", "modifyCloudToDeviceConfig")
 	return c
 }
 
@@ -4037,7 +4033,6 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) Header
 }
 
 func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -4048,7 +4043,16 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequ
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+name}:modifyCloudToDeviceConfig")
+	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.name)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("POST", urls, body)
 	if err != nil {
@@ -4325,6 +4329,7 @@ func (r *ProjectsLocationsRegistriesDevicesService) SendCommandToDevice(name str
 	c := &ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
 	c.sendcommandtodevicerequest = sendcommandtodevicerequest
+	c.urlParams_.Set("method", "sendCommandToDevice")
 	return c
 }
 
