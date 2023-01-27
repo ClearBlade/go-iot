@@ -99,7 +99,7 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 		"region": region, "registry": registry, "project": s.ServiceAccountCredentials.Project,
 	})
 	url := fmt.Sprintf("%s/api/v/1/code/%s/getRegistryCredentials", s.ServiceAccountCredentials.Url, s.ServiceAccountCredentials.SystemKey)
-	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
+	req,  err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
 	req.Header.Add("ClearBlade-UserToken", s.ServiceAccountCredentials.Token)
 	resp, err := s.client.Do(req)
 	if err != nil {
@@ -153,7 +153,6 @@ func New() (*Service, error) {
 	return s, nil
 }
 
-// TODO: create first API endpoint passing one of this service and calling GetRegistryCredentials from that function
 type Service struct {
 	client *http.Client
 	RegistryUserCache map[string] *RegistryUserCredentials
@@ -1941,6 +1940,7 @@ type ProjectsLocationsRegistriesCreateCall struct {
 func (r *ProjectsLocationsRegistriesService) Create(parent string, deviceregistry *DeviceRegistry) *ProjectsLocationsRegistriesCreateCall {
 	c := &ProjectsLocationsRegistriesCreateCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
+	c.urlParams_.Set("parent", parent)
 	c.deviceregistry = deviceregistry
 	return c
 }
@@ -2151,10 +2151,6 @@ func (c *ProjectsLocationsRegistriesDeleteCall) Do() (*Empty, error) {
 			Header:         res.Header,
 			HTTPStatusCode: res.StatusCode,
 		},
-	}
-	target := &ret
-	if err := gensupport.DecodeResponse(target, res); err != nil {
-		return nil, err
 	}
 	return ret, nil
 	// {
@@ -3420,10 +3416,6 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) doRequest(alt string) (*h
 		reqHeaders[k] = v
 	}
 	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c)
-	if err != nil {
-		return nil, err
-	}
 	reqHeaders.Set("Content-Type", "application/json")
 	matches, err := c.s.TemplatePaths.DevicePathTemplate.Match(c.name)
 	if err != nil {
@@ -3442,9 +3434,9 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) doRequest(alt string) (*h
 		return nil, err
 	}
 	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"name": c.name,
-	})
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"name": c.name,
+	// })
 	return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
@@ -3474,10 +3466,6 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) Do() (*Empty, error) {
 			Header:         res.Header,
 			HTTPStatusCode: res.StatusCode,
 		},
-	}
-	target := &ret
-	if err := gensupport.DecodeResponse(target, res); err != nil {
-		return nil, err
 	}
 	return ret, nil
 	// {
@@ -3820,7 +3808,6 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) Header() http.Header {
 }
 
 func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -3829,7 +3816,7 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*htt
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+parent}/devices")
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
 	if err != nil {
