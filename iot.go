@@ -3680,6 +3680,7 @@ type ProjectsLocationsRegistriesDevicesListCall struct {
 func (r *ProjectsLocationsRegistriesDevicesService) List(parent string) *ProjectsLocationsRegistriesDevicesListCall {
 	c := &ProjectsLocationsRegistriesDevicesListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
+	c.urlParams_.Set("parent", parent)
 	return c
 }
 
@@ -3816,6 +3817,8 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*htt
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
+	reqHeaders.Set("ClearBlade-UserToken", c.s.ServiceAccountCredentials.Token)
+
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
