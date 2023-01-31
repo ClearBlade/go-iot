@@ -2537,7 +2537,6 @@ func (c *ProjectsLocationsRegistriesListCall) Header() http.Header {
 }
 
 func (c *ProjectsLocationsRegistriesListCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -2570,6 +2569,8 @@ func (c *ProjectsLocationsRegistriesListCall) doRequest(alt string) (*http.Respo
 // because http.StatusNotModified was returned.
 func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesResponse, error) {
 	res, err := c.doRequest("json")
+	bodybytes, err := io.ReadAll(res.Body)
+	fmt.Printf("res: %s\n", string(bodybytes))
 	if res != nil && res.StatusCode == http.StatusNotModified {
 		if res.Body != nil {
 			res.Body.Close()
