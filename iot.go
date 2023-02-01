@@ -48,12 +48,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
 	"log"
 	"net/http"
-	"github.com/clearblade/go-iot/internal/path_template"
+	"os"
+
 	"github.com/clearblade/go-iot/internal/gensupport"
 	"github.com/clearblade/go-iot/internal/googleapi"
+	"github.com/clearblade/go-iot/internal/path_template"
 )
 
 type ServiceAccountCredentials struct {
@@ -3818,9 +3819,15 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*htt
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	reqHeaders.Set("ClearBlade-UserToken", c.s.ServiceAccountCredentials.Token)
-
-	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
+	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.parent)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
 	if err != nil {
