@@ -4476,6 +4476,7 @@ type ProjectsLocationsRegistriesDevicesConfigVersionsListCall struct {
 func (r *ProjectsLocationsRegistriesDevicesConfigVersionsService) List(name string) *ProjectsLocationsRegistriesDevicesConfigVersionsListCall {
 	c := &ProjectsLocationsRegistriesDevicesConfigVersionsListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
+	c.urlParams_.Set("name", name)
 	return c
 }
 
@@ -4492,7 +4493,6 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) NumVersions(n
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesDevicesConfigVersionsListCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -4524,7 +4524,6 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) Header() http
 }
 
 func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -4533,7 +4532,16 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) doRequest(alt
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+name}/configVersions")
+	matches, err := c.s.TemplatePaths.DevicePathTemplate.Match(c.name)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices_configVersions", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
 	if err != nil {
@@ -4635,6 +4643,7 @@ type ProjectsLocationsRegistriesDevicesStatesListCall struct {
 func (r *ProjectsLocationsRegistriesDevicesStatesService) List(name string) *ProjectsLocationsRegistriesDevicesStatesListCall {
 	c := &ProjectsLocationsRegistriesDevicesStatesListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
+	c.urlParams_.Set("name", name)
 	return c
 }
 
@@ -4651,7 +4660,6 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) NumStates(numStates i
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
 func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Fields(s ...googleapi.Field) *ProjectsLocationsRegistriesDevicesStatesListCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
 	return c
 }
 
@@ -4683,7 +4691,6 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Header() http.Header 
 }
 
 func (c *ProjectsLocationsRegistriesDevicesStatesListCall) doRequest(alt string) (*http.Response, error) {
-	return nil, errors.New("Not implemented")
 	reqHeaders := make(http.Header)
 	for k, v := range c.header_ {
 		reqHeaders[k] = v
@@ -4692,7 +4699,16 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) doRequest(alt string)
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+name}/states")
+	matches, err := c.s.TemplatePaths.DevicePathTemplate.Match(c.name)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices_states", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
 	if err != nil {
