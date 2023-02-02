@@ -59,15 +59,15 @@ import (
 
 type ServiceAccountCredentials struct {
 	SystemKey string `json:"systemKey"`
-	Token string `json:"token"`
-	Url string `json:"url"`
-	Project string `json:"project"`
+	Token     string `json:"token"`
+	Url       string `json:"url"`
+	Project   string `json:"project"`
 }
 
 type RegistryUserCredentials struct {
 	SystemKey string `json:"systemKey"`
-	Token string `json:"serviceAccountToken"`
-	Url string `json:"url"`
+	Token     string `json:"serviceAccountToken"`
+	Url       string `json:"url"`
 }
 
 func loadServiceAccountCredentials() (*ServiceAccountCredentials, error) {
@@ -91,7 +91,7 @@ func loadServiceAccountCredentials() (*ServiceAccountCredentials, error) {
 	return &credentials, nil
 }
 
-func GetRegistryCredentials(registry string, region string, s *Service) (*RegistryUserCredentials) {
+func GetRegistryCredentials(registry string, region string, s *Service) *RegistryUserCredentials {
 	cacheKey := fmt.Sprintf("%s-%s", region, registry)
 	if s.RegistryUserCache[cacheKey] != nil {
 		return s.RegistryUserCache[cacheKey]
@@ -100,7 +100,7 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 		"region": region, "registry": registry, "project": s.ServiceAccountCredentials.Project,
 	})
 	url := fmt.Sprintf("%s/api/v/1/code/%s/getRegistryCredentials", s.ServiceAccountCredentials.Url, s.ServiceAccountCredentials.SystemKey)
-	req,  err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
 	req.Header.Add("ClearBlade-UserToken", s.ServiceAccountCredentials.Token)
 	resp, err := s.client.Do(req)
 	if err != nil {
@@ -113,7 +113,7 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 	}
 	var credentials RegistryUserCredentials
 	_ = json.Unmarshal(body, &credentials)
-	
+
 	s.RegistryUserCache[cacheKey] = &credentials
 
 	return &credentials
@@ -121,9 +121,9 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 
 // NewService creates a new Service.
 func NewService(ctx context.Context) (*Service, error) {
-	
+
 	config, err := loadServiceAccountCredentials()
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ func NewService(ctx context.Context) (*Service, error) {
 	s.client = http.DefaultClient
 	s.RegistryUserCache = make(map[string]*RegistryUserCredentials)
 	s.ServiceAccountCredentials = config
-	devicePathTemplate, _ :=   path_template.NewPathTemplate("projects/{project}/locations/{location}/registries/{registry}/devices/{device}")
+	devicePathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}/registries/{registry}/devices/{device}")
 	locationPathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}")
 	registryPathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}/registries/{registry}")
 	s.TemplatePaths.DevicePathTemplate = devicePathTemplate
@@ -155,11 +155,11 @@ func New() (*Service, error) {
 }
 
 type Service struct {
-	client *http.Client
-	RegistryUserCache map[string] *RegistryUserCredentials
+	client                    *http.Client
+	RegistryUserCache         map[string]*RegistryUserCredentials
 	ServiceAccountCredentials *ServiceAccountCredentials
-	TemplatePaths struct {
-		DevicePathTemplate *path_template.PathTemplate
+	TemplatePaths             struct {
+		DevicePathTemplate   *path_template.PathTemplate
 		LocationPathTemplate *path_template.PathTemplate
 		RegistryPathTemplate *path_template.PathTemplate
 	}
