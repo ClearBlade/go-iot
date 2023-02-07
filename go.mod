@@ -1,12 +1,12 @@
 module github.com/clearblade/go-iot
 
-go 1.17
+go 1.19
 
-replace github.com/clearblade/go-iot/internal/gensupport => ./internal/gensupport
-
-replace github.com/clearblade/go-iot/internal/googleapi => ./internal/googleapi
-
-replace github.com/clearblade/go-iot/internal/path_template => ./internal/path_template
+replace (
+	github.com/clearblade/go-iot/internal/gensupport => ./internal/gensupport
+	github.com/clearblade/go-iot/internal/googleapi => ./internal/googleapi
+	github.com/clearblade/go-iot/internal/path_template => ./internal/path_template
+)
 
 require (
 	github.com/google/go-cmp v0.5.9
