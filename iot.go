@@ -2374,27 +2374,27 @@ func (c *ProjectsLocationsRegistriesGetIamPolicyCall) Header() http.Header {
 
 func (c *ProjectsLocationsRegistriesGetIamPolicyCall) doRequest(alt string) (*http.Response, error) {
 	return nil, errors.New("Not implemented")
-	reqHeaders := make(http.Header)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c.getiampolicyrequest)
-	if err != nil {
-		return nil, err
-	}
-	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:getIamPolicy")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("POST", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"resource": c.resource,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+	// reqHeaders := make(http.Header)
+	// for k, v := range c.header_ {
+	// 	reqHeaders[k] = v
+	// }
+	// var body io.Reader = nil
+	// body, err := googleapi.WithoutDataWrapper.JSONReader(c.getiampolicyrequest)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// reqHeaders.Set("Content-Type", "application/json")
+	// urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:getIamPolicy")
+	// urls += "?" + c.urlParams_.Encode()
+	// req, err := http.NewRequest("POST", urls, body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Header = reqHeaders
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"resource": c.resource,
+	// })
+	// return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
 // Do executes the "cloudiot.projects.locations.registries.getIamPolicy" call.
@@ -2860,27 +2860,27 @@ func (c *ProjectsLocationsRegistriesSetIamPolicyCall) Header() http.Header {
 
 func (c *ProjectsLocationsRegistriesSetIamPolicyCall) doRequest(alt string) (*http.Response, error) {
 	return nil, errors.New("Not implemented")
-	reqHeaders := make(http.Header)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c.setiampolicyrequest)
-	if err != nil {
-		return nil, err
-	}
-	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:setIamPolicy")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("POST", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"resource": c.resource,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+	// reqHeaders := make(http.Header)
+	// for k, v := range c.header_ {
+	// 	reqHeaders[k] = v
+	// }
+	// var body io.Reader = nil
+	// body, err := googleapi.WithoutDataWrapper.JSONReader(c.setiampolicyrequest)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// reqHeaders.Set("Content-Type", "application/json")
+	// urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:setIamPolicy")
+	// urls += "?" + c.urlParams_.Encode()
+	// req, err := http.NewRequest("POST", urls, body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Header = reqHeaders
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"resource": c.resource,
+	// })
+	// return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
 // Do executes the "cloudiot.projects.locations.registries.setIamPolicy" call.
@@ -3000,27 +3000,27 @@ func (c *ProjectsLocationsRegistriesTestIamPermissionsCall) Header() http.Header
 
 func (c *ProjectsLocationsRegistriesTestIamPermissionsCall) doRequest(alt string) (*http.Response, error) {
 	return nil, errors.New("Not implemented")
-	reqHeaders := make(http.Header)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c.testiampermissionsrequest)
-	if err != nil {
-		return nil, err
-	}
-	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:testIamPermissions")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("POST", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"resource": c.resource,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+	// reqHeaders := make(http.Header)
+	// for k, v := range c.header_ {
+	// 	reqHeaders[k] = v
+	// }
+	// var body io.Reader = nil
+	// body, err := googleapi.WithoutDataWrapper.JSONReader(c.testiampermissionsrequest)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// reqHeaders.Set("Content-Type", "application/json")
+	// urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:testIamPermissions")
+	// urls += "?" + c.urlParams_.Encode()
+	// req, err := http.NewRequest("POST", urls, body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Header = reqHeaders
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"resource": c.resource,
+	// })
+	// return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
 // Do executes the "cloudiot.projects.locations.registries.testIamPermissions" call.
@@ -4841,27 +4841,27 @@ func (c *ProjectsLocationsRegistriesGroupsGetIamPolicyCall) Header() http.Header
 
 func (c *ProjectsLocationsRegistriesGroupsGetIamPolicyCall) doRequest(alt string) (*http.Response, error) {
 	return nil, errors.New("Not implemented")
-	reqHeaders := make(http.Header)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c.getiampolicyrequest)
-	if err != nil {
-		return nil, err
-	}
-	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:getIamPolicy")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("POST", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"resource": c.resource,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+	// reqHeaders := make(http.Header)
+	// for k, v := range c.header_ {
+	// 	reqHeaders[k] = v
+	// }
+	// var body io.Reader = nil
+	// body, err := googleapi.WithoutDataWrapper.JSONReader(c.getiampolicyrequest)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// reqHeaders.Set("Content-Type", "application/json")
+	// urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:getIamPolicy")
+	// urls += "?" + c.urlParams_.Encode()
+	// req, err := http.NewRequest("POST", urls, body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Header = reqHeaders
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"resource": c.resource,
+	// })
+	// return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
 // Do executes the "cloudiot.projects.locations.registries.groups.getIamPolicy" call.
@@ -4980,27 +4980,27 @@ func (c *ProjectsLocationsRegistriesGroupsSetIamPolicyCall) Header() http.Header
 
 func (c *ProjectsLocationsRegistriesGroupsSetIamPolicyCall) doRequest(alt string) (*http.Response, error) {
 	return nil, errors.New("Not implemented")
-	reqHeaders := make(http.Header)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c.setiampolicyrequest)
-	if err != nil {
-		return nil, err
-	}
-	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:setIamPolicy")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("POST", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"resource": c.resource,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+	// reqHeaders := make(http.Header)
+	// for k, v := range c.header_ {
+	// 	reqHeaders[k] = v
+	// }
+	// var body io.Reader = nil
+	// body, err := googleapi.WithoutDataWrapper.JSONReader(c.setiampolicyrequest)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// reqHeaders.Set("Content-Type", "application/json")
+	// urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:setIamPolicy")
+	// urls += "?" + c.urlParams_.Encode()
+	// req, err := http.NewRequest("POST", urls, body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Header = reqHeaders
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"resource": c.resource,
+	// })
+	// return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
 // Do executes the "cloudiot.projects.locations.registries.groups.setIamPolicy" call.
@@ -5120,27 +5120,27 @@ func (c *ProjectsLocationsRegistriesGroupsTestIamPermissionsCall) Header() http.
 
 func (c *ProjectsLocationsRegistriesGroupsTestIamPermissionsCall) doRequest(alt string) (*http.Response, error) {
 	return nil, errors.New("Not implemented")
-	reqHeaders := make(http.Header)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	var body io.Reader = nil
-	body, err := googleapi.WithoutDataWrapper.JSONReader(c.testiampermissionsrequest)
-	if err != nil {
-		return nil, err
-	}
-	reqHeaders.Set("Content-Type", "application/json")
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:testIamPermissions")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("POST", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"resource": c.resource,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+	// reqHeaders := make(http.Header)
+	// for k, v := range c.header_ {
+	// 	reqHeaders[k] = v
+	// }
+	// var body io.Reader = nil
+	// body, err := googleapi.WithoutDataWrapper.JSONReader(c.testiampermissionsrequest)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// reqHeaders.Set("Content-Type", "application/json")
+	// urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+resource}:testIamPermissions")
+	// urls += "?" + c.urlParams_.Encode()
+	// req, err := http.NewRequest("POST", urls, body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Header = reqHeaders
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"resource": c.resource,
+	// })
+	// return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
 // Do executes the "cloudiot.projects.locations.registries.groups.testIamPermissions" call.
@@ -5354,25 +5354,25 @@ func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) Header() http.Header 
 
 func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) doRequest(alt string) (*http.Response, error) {
 	return nil, errors.New("Not implemented")
-	reqHeaders := make(http.Header)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	if c.ifNoneMatch_ != "" {
-		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
-	}
-	var body io.Reader = nil
-	urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+parent}/devices")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("GET", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"parent": c.parent,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+	// reqHeaders := make(http.Header)
+	// for k, v := range c.header_ {
+	// 	reqHeaders[k] = v
+	// }
+	// if c.ifNoneMatch_ != "" {
+	// 	reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
+	// }
+	// var body io.Reader = nil
+	// urls := googleapi.ResolveRelative(c.s.ServiceAccountCredentials.Url, "v1/{+parent}/devices")
+	// urls += "?" + c.urlParams_.Encode()
+	// req, err := http.NewRequest("GET", urls, body)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Header = reqHeaders
+	// googleapi.Expand(req.URL, map[string]string{
+	// 	"parent": c.parent,
+	// })
+	// return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
 // Do executes the "cloudiot.projects.locations.registries.groups.devices.list" call.
