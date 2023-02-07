@@ -16,8 +16,8 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - name: go vet
-        run: "go vet"
+      - name: pwd
+        run: "pwd"
       - uses: actions/setup-go@v3
         with:
           go-version: 1.20
