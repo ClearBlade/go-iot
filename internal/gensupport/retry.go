@@ -23,8 +23,6 @@ type Backoff interface {
 
 // These are declared as global variables so that tests can overwrite them.
 var (
-	// Default per-chunk deadline for resumable uploads.
-	defaultRetryDeadline = 32 * time.Second
 	// Default backoff timer.
 	backoff = func() Backoff {
 		return &gax.Backoff{Initial: 100 * time.Millisecond}
@@ -88,18 +86,6 @@ func shouldRetry(status int, err error) bool {
 type RetryConfig struct {
 	Backoff     *gax.Backoff
 	ShouldRetry func(err error) bool
-}
-
-// Get a new backoff object based on the configured values.
-func (r *RetryConfig) backoff() Backoff {
-	if r == nil || r.Backoff == nil {
-		return backoff()
-	}
-	return &gax.Backoff{
-		Initial:    r.Backoff.Initial,
-		Max:        r.Backoff.Max,
-		Multiplier: r.Backoff.Multiplier,
-	}
 }
 
 // This is kind of hacky; it is necessary because ShouldRetry expects to

@@ -24,7 +24,7 @@ func (q *Int64s) UnmarshalJSON(raw []byte) error {
 		if err != nil {
 			return err
 		}
-		*q = append(*q, int64(v))
+		*q = append(*q, v)
 	}
 	return nil
 }
@@ -62,7 +62,7 @@ func (q *Uint64s) UnmarshalJSON(raw []byte) error {
 		if err != nil {
 			return err
 		}
-		*q = append(*q, uint64(v))
+		*q = append(*q, v)
 	}
 	return nil
 }
@@ -100,7 +100,7 @@ func (q *Float64s) UnmarshalJSON(raw []byte) error {
 		if err != nil {
 			return err
 		}
-		*q = append(*q, float64(v))
+		*q = append(*q, v)
 	}
 	return nil
 }

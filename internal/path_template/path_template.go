@@ -323,7 +323,7 @@ func (p *pathTemplateParser) consumeUntil(stopRunes string) string {
 		if !ok {
 			break
 		}
-		if strings.IndexRune(stopRunes, r) >= 0 {
+		if strings.ContainsRune(stopRunes, r) {
 			p.unreadRune()
 			break
 		}
