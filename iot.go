@@ -4002,6 +4002,7 @@ func (r *ProjectsLocationsRegistriesDevicesService) ModifyCloudToDeviceConfig(na
 	c.name = name
 	c.modifycloudtodeviceconfigrequest = modifycloudtodeviceconfigrequest
 	c.urlParams_.Set("method", "modifyCloudToDeviceConfig")
+	c.urlParams_.Set("name", name)
 	return c
 }
 
@@ -4041,7 +4042,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequ
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.name)
+	matches, err := c.s.TemplatePaths.DevicePathTemplate.Match(c.name)
 	if err != nil {
 		return nil, err
 	}
