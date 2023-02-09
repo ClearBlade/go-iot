@@ -91,6 +91,24 @@ func loadServiceAccountCredentials() (*ServiceAccountCredentials, error) {
 	return &credentials, nil
 }
 
+func createHTTPError(res *http.Response) error {
+	bytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	var body map[string]struct {
+		Code    int64
+		Message string
+		Status  string
+	}
+	err = json.Unmarshal(bytes, &body)
+	if err != nil {
+		return err
+	}
+	return errors.New(fmt.Sprintf("clearbladeiot: Error %d: %s, %s\n", body["error"].Code, body["error"].Message, body["error"].Status))
+
+}
+
 func GetRegistryCredentials(registry string, region string, s *Service) *RegistryUserCredentials {
 	cacheKey := fmt.Sprintf("%s-%s", region, registry)
 	if s.RegistryUserCache[cacheKey] != nil {
@@ -4436,24 +4454,6 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) doRequest(al
 		"name": c.name,
 	})
 	return gensupport.SendRequest(c.ctx_, c.s.client, req)
-}
-
-func createHTTPError(res *http.Response) error {
-	bytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	var body map[string]struct {
-		Code    int64
-		Message string
-		Status  string
-	}
-	err = json.Unmarshal(bytes, &body)
-	if err != nil {
-		return err
-	}
-	return errors.New(fmt.Sprintf("clearbladeiot: Error %d: %s, %s\n", body["error"].Code, body["error"].Message, body["error"].Status))
-
 }
 
 // Do executes the "cloudiot.projects.locations.registries.devices.sendCommandToDevice" call.
