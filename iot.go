@@ -1879,6 +1879,9 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) Do() (*BindDeviceTo
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &BindDeviceToGatewayResponse{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -2017,6 +2020,9 @@ func (c *ProjectsLocationsRegistriesCreateCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &DeviceRegistry{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -2146,6 +2152,9 @@ func (c *ProjectsLocationsRegistriesDeleteCall) Do() (*Empty, error) {
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &Empty{
 		ServerResponse: googleapi.ServerResponse{
@@ -2282,6 +2291,9 @@ func (c *ProjectsLocationsRegistriesGetCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &DeviceRegistry{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -2417,6 +2429,9 @@ func (c *ProjectsLocationsRegistriesGetIamPolicyCall) Do() (*Policy, error) {
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
@@ -2583,6 +2598,9 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &ListDeviceRegistriesResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -2759,6 +2777,9 @@ func (c *ProjectsLocationsRegistriesPatchCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &DeviceRegistry{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -2904,6 +2925,9 @@ func (c *ProjectsLocationsRegistriesSetIamPolicyCall) Do() (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -3044,6 +3068,9 @@ func (c *ProjectsLocationsRegistriesTestIamPermissionsCall) Do() (*TestIamPermis
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &TestIamPermissionsResponse{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -3180,6 +3207,9 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) Do() (*UnbindDe
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &UnbindDeviceFromGatewayResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -3322,6 +3352,9 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &Device{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -3462,6 +3495,9 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) Do() (*Empty, error) {
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &Empty{
 		ServerResponse: googleapi.ServerResponse{
@@ -3617,6 +3653,9 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) Do() (*Device, error) {
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &Device{
 		ServerResponse: googleapi.ServerResponse{
@@ -3861,6 +3900,9 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) Do() (*ListDevicesResponse,
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &ListDevicesResponse{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -4084,6 +4126,9 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) Do() (
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &DeviceConfig{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -4243,6 +4288,9 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &Device{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -4390,6 +4438,24 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) doRequest(al
 	return gensupport.SendRequest(c.ctx_, c.s.client, req)
 }
 
+func createHTTPError(res *http.Response) error {
+	bytes, err := io.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	var body map[string]struct {
+		Code    int64
+		Message string
+		Status  string
+	}
+	err = json.Unmarshal(bytes, &body)
+	if err != nil {
+		return err
+	}
+	return errors.New(fmt.Sprintf("clearbladeiot: Error %d: %s, %s\n", body["error"].Code, body["error"].Message, body["error"].Status))
+
+}
+
 // Do executes the "cloudiot.projects.locations.registries.devices.sendCommandToDevice" call.
 // Exactly one of *SendCommandToDeviceResponse or error will be non-nil.
 // Any non-2xx status code is an error. Response headers are in either
@@ -4410,6 +4476,9 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) Do() (*SendC
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &SendCommandToDeviceResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -4574,6 +4643,9 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) Do() (*ListDe
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &ListDeviceConfigVersionsResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -4742,6 +4814,9 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Do() (*ListDeviceStat
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &ListDeviceStatesResponse{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -4885,6 +4960,9 @@ func (c *ProjectsLocationsRegistriesGroupsGetIamPolicyCall) Do() (*Policy, error
 	if err != nil {
 		return nil, err
 	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
+	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
@@ -5023,6 +5101,9 @@ func (c *ProjectsLocationsRegistriesGroupsSetIamPolicyCall) Do() (*Policy, error
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
@@ -5163,6 +5244,9 @@ func (c *ProjectsLocationsRegistriesGroupsTestIamPermissionsCall) Do() (*TestIam
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &TestIamPermissionsResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -5395,6 +5479,9 @@ func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) Do() (*ListDevicesRes
 	}
 	if err != nil {
 		return nil, err
+	}
+	if res.StatusCode/100 != 2 {
+		return nil, createHTTPError(res)
 	}
 	ret := &ListDevicesResponse{
 		ServerResponse: googleapi.ServerResponse{
