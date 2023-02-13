@@ -1897,7 +1897,7 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) Do() (*BindDeviceTo
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &BindDeviceToGatewayResponse{
@@ -2038,7 +2038,7 @@ func (c *ProjectsLocationsRegistriesCreateCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &DeviceRegistry{
@@ -2171,7 +2171,7 @@ func (c *ProjectsLocationsRegistriesDeleteCall) Do() (*Empty, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Empty{
@@ -2309,7 +2309,7 @@ func (c *ProjectsLocationsRegistriesGetCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &DeviceRegistry{
@@ -2448,7 +2448,7 @@ func (c *ProjectsLocationsRegistriesGetIamPolicyCall) Do() (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Policy{
@@ -2617,7 +2617,7 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &ListDeviceRegistriesResponse{
@@ -2795,7 +2795,7 @@ func (c *ProjectsLocationsRegistriesPatchCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &DeviceRegistry{
@@ -2943,7 +2943,7 @@ func (c *ProjectsLocationsRegistriesSetIamPolicyCall) Do() (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Policy{
@@ -3086,7 +3086,7 @@ func (c *ProjectsLocationsRegistriesTestIamPermissionsCall) Do() (*TestIamPermis
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &TestIamPermissionsResponse{
@@ -3226,7 +3226,7 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) Do() (*UnbindDe
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &UnbindDeviceFromGatewayResponse{
@@ -3370,7 +3370,7 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Device{
@@ -3514,7 +3514,7 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) Do() (*Empty, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Empty{
@@ -3672,7 +3672,7 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Device{
@@ -3918,7 +3918,7 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) Do() (*ListDevicesResponse,
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &ListDevicesResponse{
@@ -4062,6 +4062,7 @@ func (r *ProjectsLocationsRegistriesDevicesService) ModifyCloudToDeviceConfig(na
 	c.name = name
 	c.modifycloudtodeviceconfigrequest = modifycloudtodeviceconfigrequest
 	c.urlParams_.Set("method", "modifyCloudToDeviceConfig")
+	c.urlParams_.Set("name", name)
 	return c
 }
 
@@ -4101,7 +4102,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequ
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.name)
+	matches, err := c.s.TemplatePaths.DevicePathTemplate.Match(c.name)
 	if err != nil {
 		return nil, err
 	}
@@ -4144,7 +4145,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) Do() (
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &DeviceConfig{
@@ -4306,7 +4307,7 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Device{
@@ -4477,7 +4478,7 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) Do() (*SendC
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &SendCommandToDeviceResponse{
@@ -4644,7 +4645,7 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) Do() (*ListDe
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &ListDeviceConfigVersionsResponse{
@@ -4814,7 +4815,7 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Do() (*ListDeviceStat
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &ListDeviceStatesResponse{
@@ -4960,7 +4961,7 @@ func (c *ProjectsLocationsRegistriesGroupsGetIamPolicyCall) Do() (*Policy, error
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Policy{
@@ -5102,7 +5103,7 @@ func (c *ProjectsLocationsRegistriesGroupsSetIamPolicyCall) Do() (*Policy, error
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &Policy{
@@ -5245,7 +5246,7 @@ func (c *ProjectsLocationsRegistriesGroupsTestIamPermissionsCall) Do() (*TestIam
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &TestIamPermissionsResponse{
@@ -5480,7 +5481,7 @@ func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) Do() (*ListDevicesRes
 	if err != nil {
 		return nil, err
 	}
-	if res.StatusCode/100 != 2 {
+	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
 	ret := &ListDevicesResponse{
