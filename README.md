@@ -1,6 +1,6 @@
 # Cloud IoT API
 
-[![Go Reference](https://pkg.go.dev/badge/cloud.google.com/go/iot.svg)](https://pkg.go.dev/cloud.google.com/go/iot)
+[Go Reference Coming Soon](./)
 
 Go Client Library for ClearBlade IoT Core API.
 
@@ -9,6 +9,14 @@ Go Client Library for ClearBlade IoT Core API.
 See the [Authorization](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project)
 documentation for authorizing sdk with clearblade iot-core
 
+## Setting up service account credentials
+
+[Create a service account](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project) in your project and download the credentials .json file. Define an environment variable named `CLEARBLADE_CONFIGURATION` which represents the path to the credentials .json file. Example:
+
+```
+export CLEARBLADE_CONFIGURATION=/path/to/file.json
+```
+
 ## API Documentation
 
-View the Go secionts of these [Samples](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2310897676/Samples)
+View the Go sections of these [Samples](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2310897676/Samples)
