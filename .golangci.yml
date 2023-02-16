@@ -4,8 +4,9 @@ output:
 issues:
   max-issues-per-linter: 0 # infinite
   max-same-issues: 0 # infinite
-run:
-  modules-download-mode: vendor
+properties:
+  run:
+    modules-download-mode: vendor
 linters-settings:
   #  errcheck:
   #    check-type-assertions: true
