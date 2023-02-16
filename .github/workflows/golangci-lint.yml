@@ -20,6 +20,8 @@ jobs:
         with:
           go-version: 1.17
       - uses: actions/checkout@v3
+      - name: Download vendor files
+        run: go mod vendor
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -29,7 +31,7 @@ jobs:
           # working-directory: somedir
 
           # Optional: golangci-lint command line arguments.
-          args: --config .golangci.yml --modules-download-mode vendor
+          args: --config .golangci.yml
 
           # Optional: show only new issues if it's a pull request. The default value is `false`.
           # only-new-issues: true
