@@ -1,8 +1,7 @@
 # Cloud IoT API
 
-[Go Reference Coming Soon](./)
-
 Go Client Library for ClearBlade IoT Core API.
+[![Go Reference](https://pkg.go.dev/badge/google.golang.org/api.svg)](https://pkg.go.dev/github.com/clearblade/go-iot)
 
 ## Setting up service account credentials
 
