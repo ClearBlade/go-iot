@@ -19,7 +19,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/clearblade/go-iot/internal/third_party/uritemplates"
+	"github.com/clearblade/go-iot/cblib/third_party/uritemplates"
 )
 
 // ContentTyper is an interface for Readers which know (or would like
