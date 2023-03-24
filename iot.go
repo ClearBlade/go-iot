@@ -55,9 +55,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/clearblade/go-iot/internal/gensupport"
-	"github.com/clearblade/go-iot/internal/googleapi"
-	"github.com/clearblade/go-iot/internal/path_template"
+	"github.com/clearblade/go-iot/cblib/gensupport"
+	"github.com/clearblade/go-iot/cblib/googleapi"
+	"github.com/clearblade/go-iot/cblib/path_template"
 )
 
 type ServiceAccountCredentials struct {
