@@ -54,6 +54,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/clearblade/go-iot/cblib/gensupport"
 	"github.com/clearblade/go-iot/cblib/googleapi"
@@ -115,8 +116,14 @@ func createHTTPError(res *http.Response) error {
 func GetRegistryCredentials(registry string, region string, s *Service) *RegistryUserCredentials {
 	cacheKey := fmt.Sprintf("%s-%s", region, registry)
 	if s.RegistryUserCache[cacheKey] != nil {
+		s.RegistryUserCacheLock.RLock()
+		defer s.RegistryUserCacheLock.RUnlock()
 		return s.RegistryUserCache[cacheKey]
 	}
+
+	s.RegistryUserCacheLock.Lock()
+	defer s.RegistryUserCacheLock.Unlock()
+
 	requestBody, _ := json.Marshal(map[string]string{
 		"region": region, "registry": registry, "project": s.ServiceAccountCredentials.Project,
 	})
@@ -143,7 +150,6 @@ func GetRegistryCredentials(registry string, region string, s *Service) *Registr
 
 // NewService creates a new Service.
 func NewService(ctx context.Context) (*Service, error) {
-
 	config, err := loadServiceAccountCredentials()
 
 	if err != nil {
@@ -154,6 +160,7 @@ func NewService(ctx context.Context) (*Service, error) {
 		return nil, err
 	}
 	s.client = http.DefaultClient
+	s.RegistryUserCacheLock = sync.RWMutex{}
 	s.RegistryUserCache = make(map[string]*RegistryUserCredentials)
 	s.ServiceAccountCredentials = config
 	devicePathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}/registries/{registry}/devices/{device}")
@@ -178,6 +185,7 @@ func New() (*Service, error) {
 
 type Service struct {
 	client                    *http.Client
+	RegistryUserCacheLock     sync.RWMutex
 	RegistryUserCache         map[string]*RegistryUserCredentials
 	ServiceAccountCredentials *ServiceAccountCredentials
 	TemplatePaths             struct {
