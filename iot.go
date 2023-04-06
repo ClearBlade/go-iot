@@ -3195,7 +3195,17 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt s
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
+
+	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.parent)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+	
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("POST", urls, body)
 	if err != nil {
