@@ -129,6 +129,7 @@ func GetRegistryCredentials(registry string, region string, s *Service) *Registr
 	})
 	url := fmt.Sprintf("%s/api/v/1/code/%s/getRegistryCredentials", s.ServiceAccountCredentials.Url, s.ServiceAccountCredentials.SystemKey)
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
+	req.Close = true
 	req.Header.Add("ClearBlade-UserToken", s.ServiceAccountCredentials.Token)
 	resp, err := s.client.Do(req)
 	if err != nil {
@@ -1880,6 +1881,7 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) doRequest(alt strin
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -1908,6 +1910,7 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) Do() (*BindDeviceTo
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -2021,6 +2024,7 @@ func (c *ProjectsLocationsRegistriesCreateCall) doRequest(alt string) (*http.Res
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -2049,6 +2053,7 @@ func (c *ProjectsLocationsRegistriesCreateCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -2154,6 +2159,7 @@ func (c *ProjectsLocationsRegistriesDeleteCall) doRequest(alt string) (*http.Res
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -2182,6 +2188,7 @@ func (c *ProjectsLocationsRegistriesDeleteCall) Do() (*Empty, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -2302,6 +2309,7 @@ func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -2330,6 +2338,7 @@ func (c *ProjectsLocationsRegistriesGetCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -2469,6 +2478,7 @@ func (c *ProjectsLocationsRegistriesGetIamPolicyCall) Do() (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -2608,6 +2618,7 @@ func (c *ProjectsLocationsRegistriesListCall) doRequest(alt string) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -2638,6 +2649,7 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -2800,6 +2812,7 @@ func (c *ProjectsLocationsRegistriesPatchCall) doRequest(alt string) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -2828,6 +2841,7 @@ func (c *ProjectsLocationsRegistriesPatchCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -2976,6 +2990,7 @@ func (c *ProjectsLocationsRegistriesSetIamPolicyCall) Do() (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -3119,6 +3134,7 @@ func (c *ProjectsLocationsRegistriesTestIamPermissionsCall) Do() (*TestIamPermis
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -3241,6 +3257,7 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt s
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -3269,6 +3286,7 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) Do() (*UnbindDe
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -3385,6 +3403,7 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) doRequest(alt string) (*h
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -3413,6 +3432,7 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -3529,6 +3549,7 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) doRequest(alt string) (*h
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	// googleapi.Expand(req.URL, map[string]string{
 	// 	"name": c.name,
@@ -3557,6 +3578,7 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) Do() (*Empty, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -3687,6 +3709,7 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) doRequest(alt string) (*http
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -3715,6 +3738,7 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -3933,6 +3957,7 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*htt
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -3961,6 +3986,7 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) Do() (*ListDevicesResponse,
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -4160,6 +4186,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequ
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4188,6 +4215,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) Do() (
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -4322,6 +4350,7 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) doRequest(alt string) (*ht
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4350,6 +4379,7 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -4493,6 +4523,7 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) doRequest(al
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4521,6 +4552,7 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) Do() (*SendC
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -4660,6 +4692,7 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) doRequest(alt
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4688,6 +4721,7 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) Do() (*ListDe
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -4830,6 +4864,7 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) doRequest(alt string)
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4858,6 +4893,7 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Do() (*ListDeviceStat
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -5004,6 +5040,7 @@ func (c *ProjectsLocationsRegistriesGroupsGetIamPolicyCall) Do() (*Policy, error
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -5146,6 +5183,7 @@ func (c *ProjectsLocationsRegistriesGroupsSetIamPolicyCall) Do() (*Policy, error
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -5289,6 +5327,7 @@ func (c *ProjectsLocationsRegistriesGroupsTestIamPermissionsCall) Do() (*TestIam
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
@@ -5524,6 +5563,7 @@ func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) Do() (*ListDevicesRes
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if res.StatusCode > 299 || res.StatusCode < 200 {
 		return nil, createHTTPError(res)
 	}
