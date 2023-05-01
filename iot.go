@@ -56,8 +56,8 @@ import (
 	"os"
 
 	"github.com/clearblade/go-iot/cblib/gensupport"
-	"github.com/clearblade/go-iot/cblib/googleapi"
 	"github.com/clearblade/go-iot/cblib/path_template"
+	"google.golang.org/api/googleapi"
 )
 
 type ServiceAccountCredentials struct {
@@ -109,7 +109,6 @@ func createHTTPError(res *http.Response) error {
 		return err
 	}
 	return errors.New(fmt.Sprintf("clearbladeiot: Error %d: %s, %s\n", body["error"].Code, body["error"].Message, body["error"].Status))
-
 }
 
 func GetRegistryCredentials(registry string, region string, s *Service) *RegistryUserCredentials {
