@@ -54,6 +54,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/clearblade/go-iot/cblib/gensupport"
 	"github.com/clearblade/go-iot/cblib/path_template"
@@ -97,13 +98,20 @@ func loadServiceAccountCredentials() (*ServiceAccountCredentials, error) {
 func GetRegistryCredentials(registry string, region string, s *Service) *RegistryUserCredentials {
 	cacheKey := fmt.Sprintf("%s-%s", region, registry)
 	if s.RegistryUserCache[cacheKey] != nil {
+		s.RegistryUserCacheLock.RLock()
+		defer s.RegistryUserCacheLock.RUnlock()
 		return s.RegistryUserCache[cacheKey]
 	}
+
+	s.RegistryUserCacheLock.Lock()
+	defer s.RegistryUserCacheLock.Unlock()
+
 	requestBody, _ := json.Marshal(map[string]string{
 		"region": region, "registry": registry, "project": s.ServiceAccountCredentials.Project,
 	})
 	url := fmt.Sprintf("%s/api/v/1/code/%s/getRegistryCredentials", s.ServiceAccountCredentials.Url, s.ServiceAccountCredentials.SystemKey)
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
+	req.Close = true
 	req.Header.Add("ClearBlade-UserToken", s.ServiceAccountCredentials.Token)
 	resp, err := s.client.Do(req)
 	if err != nil {
@@ -124,7 +132,6 @@ func GetRegistryCredentials(registry string, region string, s *Service) *Registr
 
 // NewService creates a new Service.
 func NewService(ctx context.Context) (*Service, error) {
-
 	config, err := loadServiceAccountCredentials()
 
 	if err != nil {
@@ -135,6 +142,7 @@ func NewService(ctx context.Context) (*Service, error) {
 		return nil, err
 	}
 	s.client = http.DefaultClient
+	s.RegistryUserCacheLock = sync.RWMutex{}
 	s.RegistryUserCache = make(map[string]*RegistryUserCredentials)
 	s.ServiceAccountCredentials = config
 	devicePathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}/registries/{registry}/devices/{device}")
@@ -159,6 +167,7 @@ func New() (*Service, error) {
 
 type Service struct {
 	client                    *http.Client
+	RegistryUserCacheLock     sync.RWMutex
 	RegistryUserCache         map[string]*RegistryUserCredentials
 	ServiceAccountCredentials *ServiceAccountCredentials
 	TemplatePaths             struct {
@@ -1854,6 +1863,7 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) doRequest(alt strin
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -1882,6 +1892,7 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) Do() (*BindDeviceTo
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -1995,6 +2006,7 @@ func (c *ProjectsLocationsRegistriesCreateCall) doRequest(alt string) (*http.Res
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -2023,6 +2035,7 @@ func (c *ProjectsLocationsRegistriesCreateCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -2128,6 +2141,7 @@ func (c *ProjectsLocationsRegistriesDeleteCall) doRequest(alt string) (*http.Res
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -2156,6 +2170,7 @@ func (c *ProjectsLocationsRegistriesDeleteCall) Do() (*Empty, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -2260,12 +2275,23 @@ func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Respon
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
+	
+	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.name)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+	
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -2294,6 +2320,7 @@ func (c *ProjectsLocationsRegistriesGetCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -2433,6 +2460,7 @@ func (c *ProjectsLocationsRegistriesGetIamPolicyCall) Do() (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -2572,6 +2600,7 @@ func (c *ProjectsLocationsRegistriesListCall) doRequest(alt string) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -2602,6 +2631,7 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -2696,6 +2726,7 @@ type ProjectsLocationsRegistriesPatchCall struct {
 func (r *ProjectsLocationsRegistriesService) Patch(name string, deviceregistry *DeviceRegistry) *ProjectsLocationsRegistriesPatchCall {
 	c := &ProjectsLocationsRegistriesPatchCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
+	c.urlParams_.Set("name", c.name)
 	c.deviceregistry = deviceregistry
 	return c
 }
@@ -2746,12 +2777,24 @@ func (c *ProjectsLocationsRegistriesPatchCall) doRequest(alt string) (*http.Resp
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
+	
+	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.name)
+	if err != nil {
+		return nil, err
+	}
+	
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("PATCH", urls, body)
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -2780,6 +2823,7 @@ func (c *ProjectsLocationsRegistriesPatchCall) Do() (*DeviceRegistry, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -2928,6 +2972,7 @@ func (c *ProjectsLocationsRegistriesSetIamPolicyCall) Do() (*Policy, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -3071,6 +3116,7 @@ func (c *ProjectsLocationsRegistriesTestIamPermissionsCall) Do() (*TestIamPermis
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -3177,12 +3223,23 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt s
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
+
+	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.parent)
+	if err != nil {
+		return nil, err
+	}
+	registry := matches["registry"]
+	location := matches["location"]
+	credentials := GetRegistryCredentials(registry, location, c.s)
+	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
+	
+	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("POST", urls, body)
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -3211,6 +3268,7 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) Do() (*UnbindDe
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -3327,6 +3385,7 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) doRequest(alt string) (*h
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -3355,6 +3414,7 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -3471,6 +3531,7 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) doRequest(alt string) (*h
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	// googleapi.Expand(req.URL, map[string]string{
 	// 	"name": c.name,
@@ -3499,6 +3560,7 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) Do() (*Empty, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -3629,6 +3691,7 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) doRequest(alt string) (*http
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -3657,6 +3720,7 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -3875,6 +3939,7 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*htt
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"parent": c.parent,
@@ -3903,6 +3968,7 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) Do() (*ListDevicesResponse,
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -4102,6 +4168,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequ
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4130,6 +4197,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) Do() (
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -4264,6 +4332,7 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) doRequest(alt string) (*ht
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4292,6 +4361,7 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) Do() (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -4435,6 +4505,7 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) doRequest(al
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4463,6 +4534,7 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) Do() (*SendC
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -4602,6 +4674,7 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) doRequest(alt
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4630,6 +4703,7 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) Do() (*ListDe
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -4772,6 +4846,7 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) doRequest(alt string)
 	if err != nil {
 		return nil, err
 	}
+	req.Close = true
 	req.Header = reqHeaders
 	googleapi.Expand(req.URL, map[string]string{
 		"name": c.name,
@@ -4800,6 +4875,7 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Do() (*ListDeviceStat
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -4946,6 +5022,7 @@ func (c *ProjectsLocationsRegistriesGroupsGetIamPolicyCall) Do() (*Policy, error
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -5088,6 +5165,7 @@ func (c *ProjectsLocationsRegistriesGroupsSetIamPolicyCall) Do() (*Policy, error
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -5231,6 +5309,7 @@ func (c *ProjectsLocationsRegistriesGroupsTestIamPermissionsCall) Do() (*TestIam
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
@@ -5466,6 +5545,7 @@ func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) Do() (*ListDevicesRes
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
