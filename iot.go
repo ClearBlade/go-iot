@@ -57,8 +57,8 @@ import (
 	"sync"
 
 	"github.com/clearblade/go-iot/cblib/gensupport"
-	"github.com/clearblade/go-iot/cblib/googleapi"
 	"github.com/clearblade/go-iot/cblib/path_template"
+	"google.golang.org/api/googleapi"
 )
 
 type ServiceAccountCredentials struct {
@@ -93,24 +93,6 @@ func loadServiceAccountCredentials() (*ServiceAccountCredentials, error) {
 	}
 
 	return &credentials, nil
-}
-
-func createHTTPError(res *http.Response) error {
-	bytes, err := io.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-	var body map[string]struct {
-		Code    int64
-		Message string
-		Status  string
-	}
-	err = json.Unmarshal(bytes, &body)
-	if err != nil {
-		return err
-	}
-	return errors.New(fmt.Sprintf("clearbladeiot: Error %d: %s, %s\n", body["error"].Code, body["error"].Message, body["error"].Status))
-
 }
 
 func GetRegistryCredentials(registry string, region string, s *Service) *RegistryUserCredentials {
@@ -1911,8 +1893,8 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) Do() (*BindDeviceTo
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &BindDeviceToGatewayResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -2054,8 +2036,8 @@ func (c *ProjectsLocationsRegistriesCreateCall) Do() (*DeviceRegistry, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &DeviceRegistry{
 		ServerResponse: googleapi.ServerResponse{
@@ -2189,8 +2171,8 @@ func (c *ProjectsLocationsRegistriesDeleteCall) Do() (*Empty, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Empty{
 		ServerResponse: googleapi.ServerResponse{
@@ -2339,8 +2321,8 @@ func (c *ProjectsLocationsRegistriesGetCall) Do() (*DeviceRegistry, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &DeviceRegistry{
 		ServerResponse: googleapi.ServerResponse{
@@ -2479,8 +2461,8 @@ func (c *ProjectsLocationsRegistriesGetIamPolicyCall) Do() (*Policy, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
@@ -2650,8 +2632,8 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListDeviceRegistriesResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -2842,8 +2824,8 @@ func (c *ProjectsLocationsRegistriesPatchCall) Do() (*DeviceRegistry, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &DeviceRegistry{
 		ServerResponse: googleapi.ServerResponse{
@@ -2991,8 +2973,8 @@ func (c *ProjectsLocationsRegistriesSetIamPolicyCall) Do() (*Policy, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
@@ -3135,8 +3117,8 @@ func (c *ProjectsLocationsRegistriesTestIamPermissionsCall) Do() (*TestIamPermis
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &TestIamPermissionsResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -3287,8 +3269,8 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) Do() (*UnbindDe
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &UnbindDeviceFromGatewayResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -3433,8 +3415,8 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) Do() (*Device, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Device{
 		ServerResponse: googleapi.ServerResponse{
@@ -3579,8 +3561,8 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) Do() (*Empty, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Empty{
 		ServerResponse: googleapi.ServerResponse{
@@ -3739,8 +3721,8 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) Do() (*Device, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Device{
 		ServerResponse: googleapi.ServerResponse{
@@ -3987,8 +3969,8 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) Do() (*ListDevicesResponse,
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListDevicesResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -4216,8 +4198,8 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) Do() (
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &DeviceConfig{
 		ServerResponse: googleapi.ServerResponse{
@@ -4380,8 +4362,8 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) Do() (*Device, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Device{
 		ServerResponse: googleapi.ServerResponse{
@@ -4553,8 +4535,8 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) Do() (*SendC
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &SendCommandToDeviceResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -4722,8 +4704,8 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) Do() (*ListDe
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListDeviceConfigVersionsResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -4894,8 +4876,8 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Do() (*ListDeviceStat
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListDeviceStatesResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -5041,8 +5023,8 @@ func (c *ProjectsLocationsRegistriesGroupsGetIamPolicyCall) Do() (*Policy, error
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
@@ -5184,8 +5166,8 @@ func (c *ProjectsLocationsRegistriesGroupsSetIamPolicyCall) Do() (*Policy, error
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Policy{
 		ServerResponse: googleapi.ServerResponse{
@@ -5328,8 +5310,8 @@ func (c *ProjectsLocationsRegistriesGroupsTestIamPermissionsCall) Do() (*TestIam
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &TestIamPermissionsResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -5564,8 +5546,8 @@ func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) Do() (*ListDevicesRes
 		return nil, err
 	}
 	defer res.Body.Close()
-	if res.StatusCode > 299 || res.StatusCode < 200 {
-		return nil, createHTTPError(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListDevicesResponse{
 		ServerResponse: googleapi.ServerResponse{
