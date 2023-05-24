@@ -1856,7 +1856,7 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) doRequest(alt strin
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
@@ -2287,7 +2287,7 @@ func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Respon
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	
@@ -2793,7 +2793,7 @@ func (c *ProjectsLocationsRegistriesPatchCall) doRequest(alt string) (*http.Resp
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
@@ -3241,7 +3241,7 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt s
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	
@@ -3390,7 +3390,7 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) doRequest(alt string) (*h
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
@@ -3538,7 +3538,7 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) doRequest(alt string) (*h
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
@@ -3701,7 +3701,7 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) doRequest(alt string) (*http
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
@@ -3954,7 +3954,7 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*htt
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
@@ -4185,7 +4185,7 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequ
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
@@ -4351,7 +4351,7 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) doRequest(alt string) (*ht
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
@@ -4526,7 +4526,7 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) doRequest(al
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
@@ -4700,7 +4700,7 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) doRequest(alt
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
@@ -4875,7 +4875,7 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) doRequest(alt string)
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
