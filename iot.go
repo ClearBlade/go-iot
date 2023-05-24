@@ -114,12 +114,12 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 	req.Header.Add("ClearBlade-UserToken", s.ServiceAccountCredentials.Token)
 	resp, err := s.client.Do(req)
 	if err != nil {
-		return nil, err;
+		return nil, err
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err	
+		return nil, err
 	}
 	var credentials RegistryUserCredentials
 	_ = json.Unmarshal(body, &credentials)
@@ -2277,7 +2277,7 @@ func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Respon
 		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
 	}
 	var body io.Reader = nil
-	
+
 	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.name)
 	if err != nil {
 		return nil, err
@@ -2289,7 +2289,7 @@ func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Respon
 		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
-	
+
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("GET", urls, body)
@@ -2782,12 +2782,12 @@ func (c *ProjectsLocationsRegistriesPatchCall) doRequest(alt string) (*http.Resp
 		return nil, err
 	}
 	reqHeaders.Set("Content-Type", "application/json")
-	
+
 	matches, err := c.s.TemplatePaths.RegistryPathTemplate.Match(c.name)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	registry := matches["registry"]
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
@@ -3243,7 +3243,7 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt s
 		return nil, err
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
-	
+
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
 	req, err := http.NewRequest("POST", urls, body)
