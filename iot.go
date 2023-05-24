@@ -42,7 +42,7 @@
 //	cloudiotService, err := cloudiot.NewService(ctx, option.WithTokenSource(config.TokenSource(ctx, token)))
 //
 // See https://godoc.org/google.golang.org/api/option/ for details on options.
-package main
+package iot
 
 import (
 	"bytes"
@@ -1854,7 +1854,10 @@ func (c *ProjectsLocationsRegistriesBindDeviceToGatewayCall) doRequest(alt strin
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
@@ -2282,7 +2285,10 @@ func (c *ProjectsLocationsRegistriesGetCall) doRequest(alt string) (*http.Respon
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
@@ -2785,7 +2791,10 @@ func (c *ProjectsLocationsRegistriesPatchCall) doRequest(alt string) (*http.Resp
 	
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
@@ -3230,7 +3239,10 @@ func (c *ProjectsLocationsRegistriesUnbindDeviceFromGatewayCall) doRequest(alt s
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", credentials.Url, credentials.SystemKey)
@@ -3376,7 +3388,10 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) doRequest(alt string) (*h
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
@@ -3521,7 +3536,10 @@ func (c *ProjectsLocationsRegistriesDevicesDeleteCall) doRequest(alt string) (*h
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 
@@ -3681,7 +3699,10 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) doRequest(alt string) (*http
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 
@@ -3931,7 +3952,10 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) doRequest(alt string) (*htt
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
@@ -4159,7 +4183,10 @@ func (c *ProjectsLocationsRegistriesDevicesModifyCloudToDeviceConfigCall) doRequ
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
@@ -4322,7 +4349,10 @@ func (c *ProjectsLocationsRegistriesDevicesPatchCall) doRequest(alt string) (*ht
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 
@@ -4494,7 +4524,10 @@ func (c *ProjectsLocationsRegistriesDevicesSendCommandToDeviceCall) doRequest(al
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 	c.urlParams_.Set("name", c.name)
 	c.urlParams_.Set("method", "sendCommandToDevice")
@@ -4665,7 +4698,10 @@ func (c *ProjectsLocationsRegistriesDevicesConfigVersionsListCall) doRequest(alt
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices_configVersions", credentials.Url, credentials.SystemKey)
@@ -4837,7 +4873,10 @@ func (c *ProjectsLocationsRegistriesDevicesStatesListCall) doRequest(alt string)
 	}
 	registry := matches["registry"]
 	location := matches["location"]
-	credentials := GetRegistryCredentials(registry, location, c.s)
+	credentials, err := GetRegistryCredentials(registry, location, c.s)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices_states", credentials.Url, credentials.SystemKey)
