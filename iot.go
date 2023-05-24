@@ -42,7 +42,7 @@
 //	cloudiotService, err := cloudiot.NewService(ctx, option.WithTokenSource(config.TokenSource(ctx, token)))
 //
 // See https://godoc.org/google.golang.org/api/option/ for details on options.
-package iot
+package main
 
 import (
 	"bytes"
@@ -95,12 +95,12 @@ func loadServiceAccountCredentials() (*ServiceAccountCredentials, error) {
 	return &credentials, nil
 }
 
-func GetRegistryCredentials(registry string, region string, s *Service) *RegistryUserCredentials {
+func GetRegistryCredentials(registry string, region string, s *Service) (*RegistryUserCredentials, error) {
 	cacheKey := fmt.Sprintf("%s-%s", region, registry)
 	if s.RegistryUserCache[cacheKey] != nil {
 		s.RegistryUserCacheLock.RLock()
 		defer s.RegistryUserCacheLock.RUnlock()
-		return s.RegistryUserCache[cacheKey]
+		return s.RegistryUserCache[cacheKey], nil
 	}
 
 	s.RegistryUserCacheLock.Lock()
@@ -115,19 +115,19 @@ func GetRegistryCredentials(registry string, region string, s *Service) *Registr
 	req.Header.Add("ClearBlade-UserToken", s.ServiceAccountCredentials.Token)
 	resp, err := s.client.Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err;
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err	
 	}
 	var credentials RegistryUserCredentials
 	_ = json.Unmarshal(body, &credentials)
 
 	s.RegistryUserCache[cacheKey] = &credentials
 
-	return &credentials
+	return &credentials, nil
 }
 
 // NewService creates a new Service.
