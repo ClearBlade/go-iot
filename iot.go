@@ -110,6 +110,9 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 	})
 	url := fmt.Sprintf("%s/api/v/1/code/%s/getRegistryCredentials", s.ServiceAccountCredentials.Url, s.ServiceAccountCredentials.SystemKey)
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
+	if err != nil {
+		return nil, err
+	}
 	req.Close = true
 	req.Header.Add("ClearBlade-UserToken", s.ServiceAccountCredentials.Token)
 	resp, err := s.client.Do(req)
@@ -2622,6 +2625,9 @@ func (c *ProjectsLocationsRegistriesListCall) doRequest(alt string) (*http.Respo
 // because http.StatusNotModified was returned.
 func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesResponse, error) {
 	res, err := c.doRequest("json")
+	if err != nil {
+		return nil, err
+	}
 	bodybytes, err := io.ReadAll(res.Body)
 	fmt.Printf("res: %s\n", string(bodybytes))
 	if res != nil && res.StatusCode == http.StatusNotModified {
