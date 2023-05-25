@@ -2139,6 +2139,7 @@ func (c *ProjectsLocationsRegistriesDeleteCall) doRequest(alt string) (*http.Res
 	}
 	var body io.Reader = nil
 	reqHeaders.Set("ClearBlade-UserToken", c.s.ServiceAccountCredentials.Token)
+	c.urlParams_.Set("name", c.name)
 
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot", c.s.ServiceAccountCredentials.Url, c.s.ServiceAccountCredentials.SystemKey)
 	urls += "?" + c.urlParams_.Encode()
