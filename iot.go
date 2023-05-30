@@ -109,7 +109,6 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 		"region": region, "registry": registry, "project": s.ServiceAccountCredentials.Project,
 	})
 	url := fmt.Sprintf("%s/api/v/1/code/%s/getRegistryCredentials", s.ServiceAccountCredentials.Url, s.ServiceAccountCredentials.SystemKey)
-	fmt.Println(s.ServiceAccountCredentials.SystemKey, registry)
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(requestBody))
 	if err != nil {
 		return nil, err
