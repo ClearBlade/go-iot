@@ -54,6 +54,7 @@ import (
 	"net/http"
 	"os"
 	"sync"
+	"log"
 
 	"github.com/clearblade/go-iot/cblib/gensupport"
 	"github.com/clearblade/go-iot/cblib/path_template"
@@ -3351,6 +3352,8 @@ type ProjectsLocationsRegistriesDevicesCreateCall struct {
 //     `projects/example-project/locations/us-central1/registries/my-registry`.
 func (r *ProjectsLocationsRegistriesDevicesService) Create(parent string, device *Device) *ProjectsLocationsRegistriesDevicesCreateCall {
 	c := &ProjectsLocationsRegistriesDevicesCreateCall{s: r.s, urlParams_: make(gensupport.URLParams)}
+	log.Println("In Create - Line 3355")
+	log.Println(c)
 	c.parent = parent
 	c.device = device
 	return c
@@ -3400,8 +3403,17 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) doRequest(alt string) (*h
 	}
 	reqHeaders.Set("ClearBlade-UserToken", credentials.Token)
 
+	log.Println("In doRequest, credentials.Url - Line 3406")
+	log.Println(credentials.Url)
+	log.Println("In doRequest, credentials.SystemKey - Line 3408")
+	log.Println(credentials.SystemKey)
+
 	urls := fmt.Sprintf("%s/api/v/4/webhook/execute/%s/cloudiot_devices", credentials.Url, credentials.SystemKey)
+	log.Println("In doRequest, urls - Line 3412")
+	log.Println(urls)
 	urls += "?" + c.urlParams_.Encode()
+	log.Println("In doRequest, urls - Line 3415")
+	log.Println(urls)
 	req, err := http.NewRequest("POST", urls, body)
 	if err != nil {
 		return nil, err
