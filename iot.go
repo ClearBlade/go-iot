@@ -124,11 +124,13 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("GetRegistryCredentials HTTP Error %d: %s", resp.StatusCode, string(body))
+	}
 	var credentials RegistryUserCredentials
 	_ = json.Unmarshal(body, &credentials)
-
 	s.RegistryUserCache[cacheKey] = &credentials
-
+	
 	return &credentials, nil
 }
 
