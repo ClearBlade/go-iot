@@ -3397,7 +3397,6 @@ func (c *ProjectsLocationsRegistriesDevicesCreateCall) doRequest(alt string) (*h
 	registry := matches["registry"]
 	location := matches["location"]
 	credentials, err := GetRegistryCredentials(registry, location, c.s)
-	fmt.Println(credentials)
 	if err != nil {
 		return nil, err
 	}
