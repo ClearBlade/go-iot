@@ -16,7 +16,7 @@ func TestHandleNextPageTokenAsNumber(t *testing.T) {
 		}
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"deviceRegistries":[], "nextPageToken": 42}`))
+		_, _ = w.Write([]byte(`{"deviceRegistries":[], "nextPageToken": 42}`))
 	}))
 	defer server.Close()
 
@@ -52,7 +52,7 @@ func TestHandleNextPageTokenAsString(t *testing.T) {
 		}
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"deviceRegistries":[], "nextPageToken": "42"}`))
+		_, _ = w.Write([]byte(`{"deviceRegistries":[], "nextPageToken": "42"}`))
 	}))
 	defer server.Close()
 
