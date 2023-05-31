@@ -1131,39 +1131,6 @@ func (w *ListDeviceRegistriesResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Kludge because currently our webhook for listing registries returns NextPageToken as a number but should return a string
-// This struct will handle the server response and will be used as an intermediate value for ListDeviceRegistriesResponse
-type ListDeviceRegistriesResponseKludge struct {
-	// DeviceRegistries: The registries that matched the query.
-	DeviceRegistries []*DeviceRegistry `json:"deviceRegistries,omitempty"`
-
-	// NextPageToken: If not empty, indicates that there may be more
-	// registries that match the request; this value should be passed in a
-	// new `ListDeviceRegistriesRequest`.
-	NextPageToken float64 `json:"nextPageToken,omitempty"`
-
-	// ServerResponse contains the HTTP response code and headers from the
-	// server.
-	googleapi.ServerResponse `json:"-"`
-
-	// ForceSendFields is a list of field names (e.g. "DeviceRegistries") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
-	ForceSendFields []string `json:"-"`
-
-	// NullFields is a list of field names (e.g. "DeviceRegistries") to
-	// include in API requests with the JSON null value. By default, fields
-	// with empty values are omitted from API requests. However, any field
-	// with an empty value appearing in NullFields will be sent to the
-	// server as null. It is an error if a field in this list has a
-	// non-empty value. This may be used to include null fields in Patch
-	// requests.
-	NullFields []string `json:"-"`
-}
-
 func (s *ListDeviceRegistriesResponse) MarshalJSON() ([]byte, error) {
 	type NoMethod ListDeviceRegistriesResponse
 	raw := NoMethod(*s)
