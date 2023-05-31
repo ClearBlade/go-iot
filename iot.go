@@ -53,6 +53,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"sync"
 
 	"github.com/clearblade/go-iot/cblib/gensupport"
@@ -1081,6 +1082,39 @@ type ListDeviceRegistriesResponse struct {
 	// registries that match the request; this value should be passed in a
 	// new `ListDeviceRegistriesRequest`.
 	NextPageToken string `json:"nextPageToken,omitempty"`
+
+	// ServerResponse contains the HTTP response code and headers from the
+	// server.
+	googleapi.ServerResponse `json:"-"`
+
+	// ForceSendFields is a list of field names (e.g. "DeviceRegistries") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "DeviceRegistries") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+// Kludge because currently our webhook for listing registries returns NextPageToken as a number but should return a string
+// This struct will handle the server response and will be used as an intermediate value for ListDeviceRegistriesResponse
+type ListDeviceRegistriesResponseKludge struct {
+	// DeviceRegistries: The registries that matched the query.
+	DeviceRegistries []*DeviceRegistry `json:"deviceRegistries,omitempty"`
+
+	// NextPageToken: If not empty, indicates that there may be more
+	// registries that match the request; this value should be passed in a
+	// new `ListDeviceRegistriesRequest`.
+	NextPageToken float64 `json:"nextPageToken,omitempty"`
 
 	// ServerResponse contains the HTTP response code and headers from the
 	// server.
@@ -2631,8 +2665,7 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err != nil {
 		return nil, err
 	}
-	bodybytes, err := io.ReadAll(res.Body)
-	fmt.Printf("res: %s\n", string(bodybytes))
+
 	if res != nil && res.StatusCode == http.StatusNotModified {
 		if res.Body != nil {
 			res.Body.Close()
@@ -2649,17 +2682,27 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
-	ret := &ListDeviceRegistriesResponse{
+	intermediateRet := &ListDeviceRegistriesResponseKludge{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
 			HTTPStatusCode: res.StatusCode,
 		},
 	}
-	target := &ret
+	target := &intermediateRet
 	if err := gensupport.DecodeResponse(target, res); err != nil {
 		return nil, err
 	}
-	return ret, nil
+
+	nextPageToken := strconv.FormatFloat(intermediateRet.NextPageToken, 'f', -1, 64)
+
+	return &ListDeviceRegistriesResponse{
+		ServerResponse: intermediateRet.ServerResponse,
+		DeviceRegistries: intermediateRet.DeviceRegistries,
+		NextPageToken: nextPageToken,
+		ForceSendFields: intermediateRet.ForceSendFields,
+		NullFields: intermediateRet.NullFields,
+	}, nil
+
 	// {
 	//   "description": "Lists device registries.",
 	//   "flatPath": "v1/projects/{projectsId}/locations/{locationsId}/registries",
