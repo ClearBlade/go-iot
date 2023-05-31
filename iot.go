@@ -131,7 +131,7 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 	var credentials RegistryUserCredentials
 	_ = json.Unmarshal(body, &credentials)
 	s.RegistryUserCache[cacheKey] = &credentials
-	
+
 	return &credentials, nil
 }
 
@@ -1103,6 +1103,32 @@ type ListDeviceRegistriesResponse struct {
 	// non-empty value. This may be used to include null fields in Patch
 	// requests.
 	NullFields []string `json:"-"`
+}
+
+// meant to future-proof against the nextPageToken potentially changing from a number to a string
+type ambiguousListDeviceRegistriesResponse struct {
+	DeviceRegistries []*DeviceRegistry `json:"deviceRegistries,omitempty"`
+	NextPageToken interface{} `json:"nextPageToken,omitempty"`
+}
+
+func (w *ListDeviceRegistriesResponse) UnmarshalJSON(data []byte) error {
+
+	var v ambiguousListDeviceRegistriesResponse
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+
+	w.DeviceRegistries = v.DeviceRegistries
+
+	if nextPageTokenFloat, ok := v.NextPageToken.(float64); ok {
+		w.NextPageToken = strconv.FormatFloat(nextPageTokenFloat, 'f', -1, 64)
+	} else if nextPageTokenStr, ok := v.NextPageToken.(string); ok {
+		w.NextPageToken = nextPageTokenStr
+	} else {
+		return fmt.Errorf("Expected NextPageToken to be float64 or string but got: %T", v.NextPageToken)
+	}
+
+	return nil
 }
 
 // Kludge because currently our webhook for listing registries returns NextPageToken as a number but should return a string
@@ -2682,26 +2708,19 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
-	intermediateRet := &ListDeviceRegistriesResponseKludge{
+
+	ret := &ListDeviceRegistriesResponse{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
 			HTTPStatusCode: res.StatusCode,
 		},
 	}
-	target := &intermediateRet
+
+	target := &ret
 	if err := gensupport.DecodeResponse(target, res); err != nil {
 		return nil, err
 	}
-
-	nextPageToken := strconv.FormatFloat(intermediateRet.NextPageToken, 'f', -1, 64)
-
-	return &ListDeviceRegistriesResponse{
-		ServerResponse: intermediateRet.ServerResponse,
-		DeviceRegistries: intermediateRet.DeviceRegistries,
-		NextPageToken: nextPageToken,
-		ForceSendFields: intermediateRet.ForceSendFields,
-		NullFields: intermediateRet.NullFields,
-	}, nil
+	return ret, nil
 
 	// {
 	//   "description": "Lists device registries.",
