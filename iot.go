@@ -53,6 +53,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"sync"
 
 	"github.com/clearblade/go-iot/cblib/gensupport"
@@ -130,7 +131,7 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 	var credentials RegistryUserCredentials
 	_ = json.Unmarshal(body, &credentials)
 	s.RegistryUserCache[cacheKey] = &credentials
-	
+
 	return &credentials, nil
 }
 
@@ -1102,6 +1103,32 @@ type ListDeviceRegistriesResponse struct {
 	// non-empty value. This may be used to include null fields in Patch
 	// requests.
 	NullFields []string `json:"-"`
+}
+
+// meant to future-proof against the nextPageToken potentially changing from a number to a string
+type ambiguousListDeviceRegistriesResponse struct {
+	DeviceRegistries []*DeviceRegistry `json:"deviceRegistries,omitempty"`
+	NextPageToken interface{} `json:"nextPageToken,omitempty"`
+}
+
+func (w *ListDeviceRegistriesResponse) UnmarshalJSON(data []byte) error {
+
+	var v ambiguousListDeviceRegistriesResponse
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+
+	w.DeviceRegistries = v.DeviceRegistries
+
+	if nextPageTokenFloat, ok := v.NextPageToken.(float64); ok {
+		w.NextPageToken = strconv.FormatFloat(nextPageTokenFloat, 'f', -1, 64)
+	} else if nextPageTokenStr, ok := v.NextPageToken.(string); ok {
+		w.NextPageToken = nextPageTokenStr
+	} else {
+		return fmt.Errorf("Expected NextPageToken to be float64 or string but got: %T", v.NextPageToken)
+	}
+
+	return nil
 }
 
 func (s *ListDeviceRegistriesResponse) MarshalJSON() ([]byte, error) {
@@ -2631,8 +2658,7 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err != nil {
 		return nil, err
 	}
-	bodybytes, err := io.ReadAll(res.Body)
-	fmt.Printf("res: %s\n", string(bodybytes))
+
 	if res != nil && res.StatusCode == http.StatusNotModified {
 		if res.Body != nil {
 			res.Body.Close()
@@ -2649,17 +2675,20 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 	if err := googleapi.CheckResponse(res); err != nil {
 		return nil, gensupport.WrapError(err)
 	}
+
 	ret := &ListDeviceRegistriesResponse{
 		ServerResponse: googleapi.ServerResponse{
 			Header:         res.Header,
 			HTTPStatusCode: res.StatusCode,
 		},
 	}
+
 	target := &ret
 	if err := gensupport.DecodeResponse(target, res); err != nil {
 		return nil, err
 	}
 	return ret, nil
+
 	// {
 	//   "description": "Lists device registries.",
 	//   "flatPath": "v1/projects/{projectsId}/locations/{locationsId}/registries",
