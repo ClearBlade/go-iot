@@ -3687,6 +3687,14 @@ func (c *ProjectsLocationsRegistriesDevicesGetCall) FieldMask(fieldMask string) 
 	return c
 }
 
+// Base64Encode sets the optional parameter "base64Encode".
+// If set to TRUE (case-insensitive) then states are returned base64-encoded.
+// Leaving this parameter off is the same as setting it to FALSE (case-insensitive)
+func (c *ProjectsLocationsRegistriesDevicesGetCall) Base64Encode(base64Encode bool) *ProjectsLocationsRegistriesDevicesGetCall {
+	c.urlParams_.Set("base64Encode", fmt.Sprint(base64Encode))
+	return c
+}
+
 // Fields allows partial responses to be retrieved. See
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
@@ -4858,6 +4866,14 @@ func (r *ProjectsLocationsRegistriesDevicesStatesService) List(name string) *Pro
 // it will return all the states available.
 func (c *ProjectsLocationsRegistriesDevicesStatesListCall) NumStates(numStates int64) *ProjectsLocationsRegistriesDevicesStatesListCall {
 	c.urlParams_.Set("numStates", fmt.Sprint(numStates))
+	return c
+}
+
+// Base64Encode sets the optional parameter "base64Encode".
+// If set to TRUE (case-insensitive) then states are returned base64-encoded.
+// Leaving this parameter off is the same as setting it to FALSE (case-insensitive)
+func (c *ProjectsLocationsRegistriesDevicesStatesListCall) Base64Encode(base64Encode bool) *ProjectsLocationsRegistriesDevicesStatesListCall {
+	c.urlParams_.Set("base64Encode", fmt.Sprint(base64Encode))
 	return c
 }
 
