@@ -3860,15 +3860,14 @@ func (r *ProjectsLocationsRegistriesDevicesService) List(parent string) *Project
 
 // DeviceIds sets the optional parameter "deviceIds": A list of device
 // string IDs. For example, `['device0', 'device12']`. If empty, this
-// field is ignored. Maximum IDs: 10,000
+// field is ignored.
 func (c *ProjectsLocationsRegistriesDevicesListCall) DeviceIds(deviceIds ...string) *ProjectsLocationsRegistriesDevicesListCall {
 	c.urlParams_.SetMulti("deviceIds", append([]string{}, deviceIds...))
 	return c
 }
 
 // DeviceNumIds sets the optional parameter "deviceNumIds": A list of
-// device numeric IDs. If empty, this field is ignored. Maximum IDs:
-// 10,000.
+// device numeric IDs. If empty, this field is ignored.
 func (c *ProjectsLocationsRegistriesDevicesListCall) DeviceNumIds(deviceNumIds ...uint64) *ProjectsLocationsRegistriesDevicesListCall {
 	var deviceNumIds_ []string
 	for _, v := range deviceNumIds {
@@ -4062,13 +4061,13 @@ func (c *ProjectsLocationsRegistriesDevicesListCall) Do() (*ListDevicesResponse,
 	//   ],
 	//   "parameters": {
 	//     "deviceIds": {
-	//       "description": "A list of device string IDs. For example, `['device0', 'device12']`. If empty, this field is ignored. Maximum IDs: 10,000",
+	//       "description": "A list of device string IDs. For example, `['device0', 'device12']`. If empty, this field is ignored.",
 	//       "location": "query",
 	//       "repeated": true,
 	//       "type": "string"
 	//     },
 	//     "deviceNumIds": {
-	//       "description": "A list of device numeric IDs. If empty, this field is ignored. Maximum IDs: 10,000.",
+	//       "description": "A list of device numeric IDs. If empty, this field is ignored.",
 	//       "format": "uint64",
 	//       "location": "query",
 	//       "repeated": true,
@@ -5471,15 +5470,14 @@ func (r *ProjectsLocationsRegistriesGroupsDevicesService) List(parent string) *P
 
 // DeviceIds sets the optional parameter "deviceIds": A list of device
 // string IDs. For example, `['device0', 'device12']`. If empty, this
-// field is ignored. Maximum IDs: 10,000
+// field is ignored.
 func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) DeviceIds(deviceIds ...string) *ProjectsLocationsRegistriesGroupsDevicesListCall {
 	c.urlParams_.SetMulti("deviceIds", append([]string{}, deviceIds...))
 	return c
 }
 
 // DeviceNumIds sets the optional parameter "deviceNumIds": A list of
-// device numeric IDs. If empty, this field is ignored. Maximum IDs:
-// 10,000.
+// device numeric IDs. If empty, this field is ignored.
 func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) DeviceNumIds(deviceNumIds ...uint64) *ProjectsLocationsRegistriesGroupsDevicesListCall {
 	var deviceNumIds_ []string
 	for _, v := range deviceNumIds {
@@ -5662,13 +5660,13 @@ func (c *ProjectsLocationsRegistriesGroupsDevicesListCall) Do() (*ListDevicesRes
 	//   ],
 	//   "parameters": {
 	//     "deviceIds": {
-	//       "description": "A list of device string IDs. For example, `['device0', 'device12']`. If empty, this field is ignored. Maximum IDs: 10,000",
+	//       "description": "A list of device string IDs. For example, `['device0', 'device12']`. If empty, this field is ignored.",
 	//       "location": "query",
 	//       "repeated": true,
 	//       "type": "string"
 	//     },
 	//     "deviceNumIds": {
-	//       "description": "A list of device numeric IDs. If empty, this field is ignored. Maximum IDs: 10,000.",
+	//       "description": "A list of device numeric IDs. If empty, this field is ignored.",
 	//       "format": "uint64",
 	//       "location": "query",
 	//       "repeated": true,
