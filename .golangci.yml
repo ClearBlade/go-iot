@@ -1,4 +1,5 @@
 ---
+version: 2
 output:
   sort-results: true
 issues:
@@ -32,8 +33,8 @@ linters:
   enable:
     - misspell
     - unconvert
-    - gofmt
     - unparam
+#    - gofmt
 #    - nolintlint # RE-ENABLE AFTER THEY FIX GO1.18 STUFF
 #    - maligned
 #    - gocritic

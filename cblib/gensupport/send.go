@@ -162,7 +162,7 @@ func sendAndRetry(ctx context.Context, client *http.Client, req *http.Request, r
 
 		pause = bo.Pause()
 		if resp != nil && resp.Body != nil {
-			resp.Body.Close()
+			_ = resp.Body.Close()
 		}
 	}
 	return resp, err
