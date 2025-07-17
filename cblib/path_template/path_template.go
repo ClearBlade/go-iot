@@ -178,7 +178,7 @@ func (pt *PathTemplate) Match(path string) (map[string]string, error) {
 		paths = paths[length:]
 	}
 	if len(paths) != 0 {
-		return nil, fmt.Errorf("Trailing path %s remains after the matching", strings.Join(paths, "/"))
+		return nil, fmt.Errorf("trailing path %s remains after the matching", strings.Join(paths, "/"))
 	}
 	return values, nil
 }
@@ -423,8 +423,8 @@ func ResolveRelative(basestr, relstr string) string {
 	if afterColonPath != "" {
 		us = fmt.Sprintf("%s:%s", us, afterColonPath)
 	}
-	us = strings.Replace(us, "%7B", "{", -1)
-	us = strings.Replace(us, "%7D", "}", -1)
-	us = strings.Replace(us, "%2A", "*", -1)
+	us = strings.ReplaceAll(us, "%7B", "{")
+	us = strings.ReplaceAll(us, "%7D", "}")
+	us = strings.ReplaceAll(us, "%2A", "*")
 	return us
 }

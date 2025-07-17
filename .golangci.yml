@@ -1,39 +1,40 @@
 ---
-output:
-  sort-results: true
+version: "2"
+# output:
+#   sort-results: true
 issues:
   max-issues-per-linter: 0 # infinite
   max-same-issues: 0 # infinite
 run:
   modules-download-mode: vendor
-linters-settings:
-  #  errcheck:
-  #    check-type-assertions: true
-  staticcheck:
-    checks: ["all", "-SA5008"]
-  maligned:
-    suggest-new: true
-  misspell:
-    ignore-words:
-      - eles
-      - alledges
-  gocritic:
-    # checks described here: https://go-critic.github.io/overview
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-    disabled-checks:
-      - commentFormatting
-      - unnamedResult
+# linters-settings:
+#   #  errcheck:
+#   #    check-type-assertions: true
+#   staticcheck:
+#     checks: ["all", "-SA5008"]
+#   maligned:
+#     suggest-new: true
+#   misspell:
+#     ignore-words:
+#       - eles
+#       - alledges
+#   gocritic:
+#     # checks described here: https://go-critic.github.io/overview
+#     enabled-tags:
+#       - diagnostic
+#       - experimental
+#       - opinionated
+#       - performance
+#       - style
+#     disabled-checks:
+#       - commentFormatting
+#       - unnamedResult
 linters:
   enable:
     - misspell
     - unconvert
-    - gofmt
     - unparam
+#    - gofmt
 #    - nolintlint # RE-ENABLE AFTER THEY FIX GO1.18 STUFF
 #    - maligned
 #    - gocritic
@@ -41,3 +42,6 @@ linters:
 #    - bodyclose
 #    - sqlclosecheck
 #    - prealloc
+formatters:
+  enable:
+    - gofmt

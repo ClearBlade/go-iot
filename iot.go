@@ -1108,7 +1108,7 @@ type ListDeviceRegistriesResponse struct {
 // meant to future-proof against the nextPageToken potentially changing from a number to a string
 type ambiguousListDeviceRegistriesResponse struct {
 	DeviceRegistries []*DeviceRegistry `json:"deviceRegistries,omitempty"`
-	NextPageToken interface{} `json:"nextPageToken,omitempty"`
+	NextPageToken    interface{}       `json:"nextPageToken,omitempty"`
 }
 
 func (w *ListDeviceRegistriesResponse) UnmarshalJSON(data []byte) error {
@@ -2667,9 +2667,6 @@ func (c *ProjectsLocationsRegistriesListCall) Do() (*ListDeviceRegistriesRespons
 			Code:   res.StatusCode,
 			Header: res.Header,
 		})
-	}
-	if err != nil {
-		return nil, err
 	}
 	defer res.Body.Close()
 	if err := googleapi.CheckResponse(res); err != nil {
