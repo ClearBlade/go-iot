@@ -135,27 +135,74 @@ func GetRegistryCredentials(registry string, region string, s *Service) (*Regist
 	return &credentials, nil
 }
 
-// NewService creates a new Service.
-func NewService(ctx context.Context) (*Service, error) {
-	config, err := loadServiceAccountCredentials()
+// ServiceOption is a configuration option for a Service.
+type ServiceOption func(*Service) error
 
-	if err != nil {
-		return nil, err
+// WithServiceAccountCredentials provides service account credentials to the service.
+func WithServiceAccountCredentials(credentials string) ServiceOption {
+	return func(s *Service) error {
+		c := &ServiceAccountCredentials{}
+		if err := json.Unmarshal([]byte(credentials), c); err != nil {
+			return fmt.Errorf("invalid service account credentials: %w", err)
+		}
+		s.ServiceAccountCredentials = c
+		return nil
 	}
+}
+
+// WithFileCredentials provides service account credentials to the service from a file.
+func WithFileCredentials() ServiceOption {
+	return func(s *Service) error {
+		config, err := loadServiceAccountCredentials()
+		if err != nil {
+			return err
+		}
+		s.ServiceAccountCredentials = config
+		return nil
+	}
+}
+
+// WithHTTPClient provides a custom HTTP client to the service.
+func WithHTTPClient(client *http.Client) ServiceOption {
+	return func(s *Service) error {
+		if client == nil {
+			return fmt.Errorf("http client cannot be nil")
+		}
+		s.client = client
+		return nil
+	}
+}
+
+// NewService creates a new Service.
+func NewService(ctx context.Context, opts ...ServiceOption) (*Service, error) {
 	s, err := New()
 	if err != nil {
 		return nil, err
 	}
+
 	s.client = http.DefaultClient
 	s.RegistryUserCacheLock = sync.RWMutex{}
 	s.RegistryUserCache = make(map[string]*RegistryUserCredentials)
-	s.ServiceAccountCredentials = config
 	devicePathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}/registries/{registry}/devices/{device}")
 	locationPathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}")
 	registryPathTemplate, _ := path_template.NewPathTemplate("projects/{project}/locations/{location}/registries/{registry}")
 	s.TemplatePaths.DevicePathTemplate = devicePathTemplate
 	s.TemplatePaths.LocationPathTemplate = locationPathTemplate
 	s.TemplatePaths.RegistryPathTemplate = registryPathTemplate
+
+	// Apply service options.
+	for _, opt := range opts {
+		if err := opt(s); err != nil {
+			return nil, fmt.Errorf("failed to apply service option: %w", err)
+		}
+	}
+
+	// Load credentials from file if option not provided.
+	if s.ServiceAccountCredentials == nil {
+		if err := WithFileCredentials()(s); err != nil {
+			return nil, err
+		}
+	}
 	return s, nil
 }
 

@@ -5,11 +5,26 @@ ClearBlade IoT Core API's Go client library
 
 ## Setting up service account credentials
 
-[Create a service account](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project) in your project and download the credentials .json file. Define environment variable `CLEARBLADE_CONFIGURATION`, representing the credentials .json file's path. Example:
+[Create a service account](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project) in your project and download the credentials .json file.
 
-```
-export CLEARBLADE_CONFIGURATION=/path/to/file.json
-```
+To authenticate API requests you can use one of two options:
+
+1. Define an environment variable named `CLEARBLADE_CONFIGURATION` which represents the path to the credentials .json file.
+   Example:
+
+   ```
+   export CLEARBLADE_CONFIGURATION=/path/to/file.json
+   ```
+
+2. Pass in credentials via the Service options:
+   ```
+   credentials := `{"systemKey":"systemkeyhere","token":"tokenhere","url":"https://iot.clearblade.com","project":"test"}`
+
+   service, err := iot.NewService(ctx, iot.WithServiceAccountCredentials(credentials))
+   if err != nil {
+     return err
+   }
+   ```
 
 ## Authorization
 
